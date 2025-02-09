@@ -3,7 +3,7 @@ build
 install
 log
 /snap/robot-ahilya_0.1_amd64.snap
-.gitmodules
+# .gitmodules
 /src/xp_vision
 
 /src/test_arduino

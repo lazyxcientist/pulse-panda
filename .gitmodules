@@ -1,0 +1,18 @@
+[submodule "xparo_dashboard"]
+    path = src/xparo/xparo_dashboard
+    url = https://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@github.com/lazyxcientist/xparo_dashboard.git
+[submodule "xparo_listen"]
+    path = src/xparo/xparo_listen
+    url = https://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@github.com/lazyxcientist/xparo_listen.git
+[submodule "xparo_ros"]
+    path = src/xparo/xparo_ros
+    url = https://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@github.com/lazyxcientist/xparo_ros.git
+[submodule "xparo_settings"]
+    path = src/xparo/xparo_settings
+    url = https://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@github.com/lazyxcientist/xparo_settings.git
+[submodule "xparo_speak"]
+    path = src/xparo/xparo_speak
+    url = https://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@github.com/lazyxcientist/xparo_speak.git
+[submodule "xparo_task"]
+    path = src/xparo/xparo_task
+    url = https://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@github.com/lazyxcientist/xparo_task.git
