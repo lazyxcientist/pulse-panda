@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+
+<robot name="Robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+
+    <!-- robot wheel drive -->
+    <!-- <gazebo>
+        <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system" >
+
+            <left_joint>wheel_left_joint</left_joint>
+            <right_joint>wheel_right_joint</right_joint>
+            <wheel_separation>0.2</wheel_separation>
+            <wheel_radius>0.035</wheel_radius>
+
+
+            <max_linear_acceleration>0.33</max_linear_acceleration>
+
+
+            <topic>cmd_vel</topic>
+
+
+            <frame_id>odom</frame_id>
+            <child_frame_id>base_link</child_frame_id>
+            <odom_topic>odom</odom_topic>
+            <odom_publisher_frequency>30</odom_publisher_frequency>
+            <tf_topic>/tf</tf_topic>
+
+        </plugin>
+        <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+            <topic>joint_states</topic>
+            <joint_name>wheel_left_joint</joint_name>
+            <joint_name>wheel_right_joint</joint_name>
+        </plugin>
+    </gazebo> -->
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Move this one to ros2 control -->
+  <transmission name="wheel_right_transmission">
+    <plugin>transmission_interface/SimpleTransmission</plugin>
+    <actuator name="wheel_right_motor" role="actuator_right"/>
+    <joint name="wheel_right_joint"    role="joint_right">
+      <mechanical_reduction>1.0</mechanical_reduction> 
+      <!-- no of rotation by wheel and no of rotation by motar is defined by  mechanical_reduction -->
+    </joint>
+  </transmission>
+
+  <transmission name="wheel_left_transmission">
+    <plugin>transmission_interface/SimpleTransmission</plugin>
+    <actuator name="wheel_left_motor" role="actuator_left"/>
+    <joint name="wheel_left_joint"    role="joint_left">
+      <mechanical_reduction>1.0</mechanical_reduction>
+    </joint>
+  </transmission>
+
+
+  <gazebo reference="base_link">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+
+  <!-- Wheels -->
+  <gazebo reference="wheel_left_link">
+    <mu1>1000000000000000.0</mu1>
+    <mu2>1000000000000000.0</mu2>
+    <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/Blue</material>
+  </gazebo>
+  
+  <gazebo reference="wheel_right_link">
+    <mu1>1000000000000000.0</mu1>
+    <mu2>1000000000000000.0</mu2>
+    <kp>1000000000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/Blue</material>
+  </gazebo>
+  
+  <!-- Caster Wheels -->
+  <gazebo reference="caster_rear_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+  <gazebo reference="caster_front_link">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+  <gazebo reference="caster_rear_link_1">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+  <gazebo reference="caster_front_link_1">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+  </gazebo>
+
+  
+
+
+
+  
+</robot>

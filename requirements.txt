@@ -1,0 +1,18 @@
+## ros tools
+setuptools==58.2.0
+transforms3d
+aiortc
+catkin_pkg
+
+
+## hardware
+pyserial
+smbus
+pyfirmata
+
+
+## ai tools
+numpy
+numpy-quaternion
+opencv-python
+

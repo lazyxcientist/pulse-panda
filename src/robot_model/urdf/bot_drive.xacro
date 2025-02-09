@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+
+<robot  xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+
+
+  <link name="wheel_left_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.035" length="0.03" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.035" length="0.03" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.03" radius="0.036">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+
+
+
+  <link name="wheel_right_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.035" length="0.03" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.035" length="0.03" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.03" radius="0.036">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+
+
+
+
+
+
+
+
+
+
+  <link name="caster_front_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.04" radius="0.01">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+  <link name="caster_rear_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.04" radius="0.01">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+  <link name="caster_front_link_1">
+    <visual>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.04" radius="0.01">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+  <link name="caster_rear_link_1">
+    <visual>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.01" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="1.1" length="0.04" radius="0.01">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+
+
+
+  <!-- chassis ==to== right tyre  -->
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="chassis" />
+    <child link="wheel_left_link" />
+    <origin xyz="0.0 0.1 0.022" rpy="-${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+        <limit effort="100" velocity="10.0"/>
+        <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <!-- chassis ==to== left tyre  -->
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="chassis" />
+    <child link="wheel_right_link" />
+    <origin xyz="0.0 -0.1 0.022" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 -1" />
+        <limit effort="100" velocity="10.0"/>
+        <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  
+
+
+
+  <!-- chassis ==to== caster wheel  -->
+  <joint name="body_to_caster_wheel_Joint_1" type="fixed">
+    <parent link="chassis" />
+    <child link="caster_front_link" />
+    <origin xyz="0.135 -0.101 -0.003" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <joint name="body_to_caster_wheel_Joint_2" type="fixed">
+    <parent link="chassis" />
+    <child link="caster_rear_link" />
+    <origin xyz="0.135 0.101 -0.003" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <joint name="body_to_caster_wheel_Joint_3" type="fixed">
+    <parent link="chassis" />
+    <child link="caster_rear_link_1" />
+    <origin xyz="-0.135 -0.101 -0.003" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <joint name="body_to_caster_wheel_Joint_4" type="fixed">
+    <parent link="chassis" />
+    <child link="caster_front_link_1" />
+    <origin xyz="-0.135 0.101 -0.003" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+
+</robot>

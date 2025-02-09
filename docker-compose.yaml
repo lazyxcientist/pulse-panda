@@ -1,0 +1,149 @@
+
+services:
+  uniro_v1_bot:
+    image: uniro_v1:latest
+    hostname: uniro_v1_host
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ROS_DISTRO: humble
+      # target: uniro_v1_bot
+    command: sh
+    restart: always
+    stdin_open: true
+    tty: true
+    network_mode: host
+    ipc: host
+    # runtime: nvidia ##FIXME:
+    # gpus: all  
+    privileged: true
+    environment:
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - DISPLAY=unix$DISPLAY
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      # - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+      - /run/user/1000/pulse:/run/user/1000/pulse
+      - /dev/snd:/dev/snd
+      - /dev/shm:/dev/shm
+      - /dev/dsp:/dev/dsp
+      - /dev:/dev
+      - ./:/robot/
+    devices:
+      - /dev/dsp:/dev/dsp
+      - /dev/snd:/dev/snd
+      - /dev/vcsm:/dev/vcsm
+  ##################################################
+
+
+
+
+
+
+
+
+#   ####################################################
+#   ############# Simulation launch ####################
+#   ####################################################
+  # robot_simulation:
+  #   image: uniro_v1:latest 
+  #   depends_on:
+  #     - uniro_v1_bot
+  #   restart: always
+  #   container_name: robot_simulation
+  #   command: bash -c "source /robot/install/setup.bash &&
+  #                     ros2 launch core robot_launch.launch.py  "
+  #   stdin_open: true
+  #   tty: true
+  #   network_mode: host
+  #   ipc: host
+  #   privileged: true
+  #   environment:
+  #     - PULSE_SERVER=unix:/run/user/1000/pulse/native
+  #     - DISPLAY=unix$DISPLAY
+  #     - DISPLAY=${DISPLAY}
+  #     - QT_X11_NO_MITSHM=1
+  #     - NVIDIA_DRIVER_CAPABILITIES=all
+  #   volumes:
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
+  #     - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+  #     - /run/user/1000/pulse:/run/user/1000/pulse
+  #     - /dev/snd:/dev/snd
+  #     - /dev/shm:/dev/shm
+  #     - /dev/dsp:/dev/dsp
+  #     - /dev:/dev
+  #     - ./:/robot/
+  #   devices:
+  #     - /dev/dsp:/dev/dsp
+  #     - /dev/snd:/dev/snd
+  #     - /dev/vcsm:/dev/vcsm
+
+
+  robot_visualization:
+    image: uniro_v1:latest 
+    depends_on:
+      - uniro_v1_bot
+    restart: always
+    container_name: robot_visualization
+    command: bash -c "source /robot/install/setup.bash &&
+                      ros2 launch core launch_data_visualization.launch.py  "
+    stdin_open: true
+    tty: true
+    network_mode: host
+    ipc: host
+    privileged: true
+    environment:
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - DISPLAY=unix$DISPLAY
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+      - /run/user/1000/pulse:/run/user/1000/pulse
+      - /dev/snd:/dev/snd
+      - /dev/shm:/dev/shm
+      - /dev/dsp:/dev/dsp
+      - /dev:/dev
+      - ./:/robot/
+    devices:
+      - /dev/dsp:/dev/dsp
+      - /dev/snd:/dev/snd
+      - /dev/vcsm:/dev/vcsm
+
+
+
+
+
+
+
+
+  ####################################################
+  ############# monitoring ###########################
+  ####################################################
+  portainer:
+    image: portainer/portainer-ce
+    container_name: XP_portainer_lazy
+    restart: always
+    ports:
+      - 8001:8000
+      - 9001:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+  ##################################################
+
+volumes:
+  portainer_data:
+
+
+
+
+
+
