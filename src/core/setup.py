@@ -24,6 +24,7 @@ setup(
         (os.path.join('share', package_name,'xparo/sets'), glob('xparo/sets/*')),
         (os.path.join('share', package_name,'xparo/maps'), glob('xparo/maps/*')),
         (os.path.join('share', package_name,'xparo/properties'), glob('xparo/properties/*')),
+        (os.path.join('share', package_name,'xparo/speak'), glob('xparo/speak/*')),
         
 
     ],
