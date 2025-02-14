@@ -34,6 +34,34 @@ def generate_launch_description():
             ]
         ),
 
+
+        #######################################
+        ############# Custom llm ##############
+        # chatgpt
+        # Node(
+        #     package='xparo',
+        #     executable='custom_llm_chatgpt',
+        #     name='custom_llm',
+        #     output='screen',
+        #     parameters=[
+        #         {'xparo_chatgpt_api_key': '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'},
+        #         {'xparo_chatgpt_model': 'gpt-4'},
+        #         {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+        #     ]
+        # ),
+        # ollama
+        Node(
+            package='xparo',
+            executable='custom_llm_ollama',
+            name='custom_llm',
+            output='screen',
+            parameters=[
+                {'xparo_chatgpt_model': 'llama3.2:1b'},  #moondream
+                {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+            ]
+        ),
+
+
         # Dashboard UI
         Node(
             package='xparo_dashboard',
