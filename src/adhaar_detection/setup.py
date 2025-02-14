@@ -26,7 +26,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "adhaar := adhaar_detection.adhaar_main:main",
+            "adhaar = adhaar_detection.adhaar_main:main",
         ],
     },
 )

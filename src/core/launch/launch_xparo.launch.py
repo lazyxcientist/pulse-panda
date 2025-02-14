@@ -18,21 +18,21 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='True', description='Use simulation time'),
 
         # Xparo Brain
-        Node(
-            package='xparo',
-            executable='xparo',
-            name='xparo_ros',
-            output='screen',
-            parameters=[
-                {'xparo_secret_key': xparo_secret_key},
-                {'xparo_project_id': xparo_project_id},
-                {'xparo_connection_type': 'hybrid'},
-                {'xparo_custom_aiml_path': os.path.join(current_dir, "xparo", 'aiml')},
-                {'xparo_custom_sets_path': os.path.join(current_dir, "xparo", 'sets')},
-                {'xparo_custom_maps_path': os.path.join(current_dir, "xparo", 'maps')},
-                {'xparo_custom_properties_path': os.path.join(current_dir, "xparo", 'properties')},
-            ]
-        ),
+        # Node(
+        #     package='xparo',
+        #     executable='xparo',
+        #     name='xparo_ros',
+        #     output='screen',
+        #     parameters=[
+        #         {'xparo_secret_key': xparo_secret_key},
+        #         {'xparo_project_id': xparo_project_id},
+        #         {'xparo_connection_type': 'hybrid'},
+        #         {'xparo_custom_aiml_path': os.path.join(current_dir, "xparo", 'aiml')},
+        #         {'xparo_custom_sets_path': os.path.join(current_dir, "xparo", 'sets')},
+        #         {'xparo_custom_maps_path': os.path.join(current_dir, "xparo", 'maps')},
+        #         {'xparo_custom_properties_path': os.path.join(current_dir, "xparo", 'properties')},
+        #     ]
+        # ),
 
 
         #######################################

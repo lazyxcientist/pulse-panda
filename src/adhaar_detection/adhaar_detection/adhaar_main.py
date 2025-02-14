@@ -54,7 +54,7 @@ class Adhaar_class(Node):
     def __init__(self):
         super().__init__('Adhaar_node')
 
-        self.subscriber = self.create_subscription(Image,'/camera/image_raw',self.process_data,10)
+        self.subscriber = self.create_subscription(Image,'/image_raw',self.process_data,10)
         self.adhaar_detected = self.create_publisher(String,"/adhaar/detected",10)
 
         self.bridge   = CvBridge()
@@ -64,8 +64,8 @@ class Adhaar_class(Node):
         ###########################################
         ###########################################
         # Load Yolo
-        weights = os.path.join(get_package_share_directory("adhaar_main","weights","yolov3last2.weights"))
-        cfg_file = os.path.join(get_package_share_directory("adhaar_detection","weights","yolov3.cfg"))
+        # weights = os.path.join(get_package_share_directory("adhaar_main","weights","yolov3last2.weights"))
+        # cfg_file = os.path.join(get_package_share_directory("adhaar_detection","weights","yolov3.cfg"))
 
         ###########################################
         ###########################################
