@@ -10,8 +10,8 @@ def generate_launch_description():
     current_dir = get_package_share_directory(package_name)
     use_sim_time = LaunchConfiguration('use_sim_time', default='True')
 
-    xparo_project_id = "87d0e7da-9a6f-44a9-b163-2d36ea40614a"
-    xparo_secret_key = "e9747ff149e9fb7a552cd4ddf05959692feab62986ce8b4fcc3df2e51b4706df"
+    xparo_project_id = "b76a82e7-8efc-4c6f-94e9-f2dbdf3b0d73"
+    xparo_secret_key = "700382fde6586f6114cf5fa6b0556645df6ee955d4d9e1d8e6e1dc6835feea00"
 
     return LaunchDescription([
         # Declare Launch Arguments
