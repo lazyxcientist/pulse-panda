@@ -37,27 +37,38 @@ def generate_launch_description():
 
         #######################################
         ############# Custom llm ##############
-        # chatgpt
+        #######################################
+        
+        ############## chatgpt ################
         # Node(
         #     package='xparo',
         #     executable='custom_llm_chatgpt',
-        #     name='custom_llm',
         #     output='screen',
         #     parameters=[
-        #         {'xparo_chatgpt_api_key': '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'},
-        #         {'xparo_chatgpt_model': 'gpt-4'},
-        #         {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+        #         {'xparo_custom_llm_api_key': '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'},
+        #         {'xparo_custom_llm_model': 'gpt-4'},
+        #         {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
         #     ]
         # ),
-        # ollama
+        ############## ollama ################
         # Node(
         #     package='xparo',
         #     executable='custom_llm_ollama',
-        #     name='custom_llm',
         #     output='screen',
         #     parameters=[
-        #         {'xparo_chatgpt_model': 'llama3.2:1b'},  #moondream
-        #         {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+        #         {'xparo_custom_llm_model': 'llama3.2:1b'},  #moondream
+        #         {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+        #     ]
+        # ),
+        ############# openrouter #############
+        # Node(
+        #     package='xparo',
+        #     executable='custom_llm_openrouter',
+        #     output='screen',
+        #     parameters=[
+        #         {'xparo_custom_llm_api_key': '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'},
+        #         {'xparo_custom_llm_model': 'gpt-4'},
+        #         {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
         #     ]
         # ),
 
