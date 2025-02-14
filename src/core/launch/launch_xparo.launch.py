@@ -18,21 +18,21 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='True', description='Use simulation time'),
 
         # Xparo Brain
-        # Node(
-        #     package='xparo',
-        #     executable='xparo',
-        #     name='xparo_ros',
-        #     output='screen',
-        #     parameters=[
-        #         {'xparo_secret_key': xparo_secret_key},
-        #         {'xparo_project_id': xparo_project_id},
-        #         {'xparo_connection_type': 'hybrid'},
-        #         {'xparo_custom_aiml_path': os.path.join(current_dir, "xparo", 'aiml')},
-        #         {'xparo_custom_sets_path': os.path.join(current_dir, "xparo", 'sets')},
-        #         {'xparo_custom_maps_path': os.path.join(current_dir, "xparo", 'maps')},
-        #         {'xparo_custom_properties_path': os.path.join(current_dir, "xparo", 'properties')},
-        #     ]
-        # ),
+        Node(
+            package='xparo',
+            executable='xparo',
+            name='xparo_ros',
+            output='screen',
+            parameters=[
+                {'xparo_secret_key': xparo_secret_key},
+                {'xparo_project_id': xparo_project_id},
+                {'xparo_connection_type': 'hybrid'},
+                {'xparo_custom_aiml_path': os.path.join(current_dir, "xparo", 'aiml')},
+                {'xparo_custom_sets_path': os.path.join(current_dir, "xparo", 'sets')},
+                {'xparo_custom_maps_path': os.path.join(current_dir, "xparo", 'maps')},
+                {'xparo_custom_properties_path': os.path.join(current_dir, "xparo", 'properties')},
+            ]
+        ),
 
 
         #######################################
@@ -50,16 +50,16 @@ def generate_launch_description():
         #     ]
         # ),
         # ollama
-        Node(
-            package='xparo',
-            executable='custom_llm_ollama',
-            name='custom_llm',
-            output='screen',
-            parameters=[
-                {'xparo_chatgpt_model': 'llama3.2:1b'},  #moondream
-                {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
-            ]
-        ),
+        # Node(
+        #     package='xparo',
+        #     executable='custom_llm_ollama',
+        #     name='custom_llm',
+        #     output='screen',
+        #     parameters=[
+        #         {'xparo_chatgpt_model': 'llama3.2:1b'},  #moondream
+        #         {'xparo_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+        #     ]
+        # ),
 
 
         # Dashboard UI
@@ -117,7 +117,7 @@ def generate_launch_description():
             name='xparo_listen',
             output='screen',
             parameters=[
-                {'xparo_voice_model': 'vosk-model-small-en-in-0.4'},
+                {'xparo_voice_model': 'vosk-model-en-in-0.5'},   #vosk-model-small-en-in-0.4
                 {'base_path': '/var/tmp/xparo/listen'},
             ]
         ),

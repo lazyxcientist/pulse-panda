@@ -107,19 +107,32 @@ class Adhaar_class(Node):
         aadhar_no = aadhar_pattern.search(extracted_text)
 
         # Print the extracted details
-        print("Name:", name.group(1).strip() if name else "Not found")
-        print("DOB:", dob.group(2).strip() if dob else "Not found")
-        print("Gender:", gender.group(2).strip() if gender else "Not found")
-        print("Aadhaar No:", aadhar_no.group().strip() if aadhar_no else "Not found")
+        Name= name.group(1).strip() if name else None
+        DOB= dob.group(2).strip() if dob else None
+        Gender= gender.group(2).strip() if gender else None
+        Aadhaar = aadhar_no.group().strip() if aadhar_no else None
+
+        # Print the extracted details
+        print("Name:", Name)
+        print("DOB:", DOB)
+        print("Gender:", Gender)
+        print("Aadhaar No:", Aadhaar)
 
 
-        dta = String()
-        dta.data = json.dumps({
-            "Name:": name.group(1).strip() if name else "Not found",
-            "DOB:": dob.group(2).strip() if dob else "Not found",
-            "Gender:": gender.group(2).strip() if gender else "Not found",
-            "Aadhaar No:": aadhar_no.group().strip() if aadhar_no else "Not found"
-        })
+        if Aadhaar:
+            dta = String()
+            dta.data = json.dumps({
+                "Name:": Name,
+                "DOB:": DOB,
+                "Gender:": Gender,
+                "Aadhaar No:": Aadhaar
+            })
+            self.adhaar_detected.publish(dta)
+
+            # Signal the main function to shut down
+            self.get_logger().info("Aadhaar data detected. Shutting down node.")
+            raise SystemExit  # Exit the node gracefully
+
 
 
         cv2.imshow("Frame",processed_image)
@@ -130,8 +143,21 @@ class Adhaar_class(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    rclpy.spin(Adhaar_class())
-    rclpy.shutdown()
+    # rclpy.spin(Adhaar_class())
+    # rclpy.shutdown()
+
+    node = Adhaar_class()
+    
+    try:
+        rclpy.spin(node)
+    except SystemExit:  # Catch the SystemExit exception to shut down gracefully
+        node.get_logger().info("Shutting down node due to Aadhaar data detection.")
+    except KeyboardInterrupt:
+        node.get_logger().info("Shutting down node due to user interrupt.")
+    finally:
+        # Cleanup
+        node.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
