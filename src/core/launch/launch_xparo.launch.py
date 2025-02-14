@@ -38,7 +38,7 @@ def generate_launch_description():
         #######################################
         ############# Custom llm ##############
         #######################################
-        
+
         ############## chatgpt ################
         # Node(
         #     package='xparo',
@@ -61,16 +61,16 @@ def generate_launch_description():
         #     ]
         # ),
         ############# openrouter #############
-        # Node(
-        #     package='xparo',
-        #     executable='custom_llm_openrouter',
-        #     output='screen',
-        #     parameters=[
-        #         {'xparo_custom_llm_api_key': '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'},
-        #         {'xparo_custom_llm_model': 'gpt-4'},
-        #         {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
-        #     ]
-        # ),
+        Node(
+            package='xparo',
+            executable='custom_llm_openrouter',
+            output='screen',
+            parameters=[
+                {'xparo_custom_llm_api_key': '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'},
+                {'xparo_custom_llm_model': 'qwen/qwen-vl-plus:free'},
+                {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+            ]
+        ),
 
 
         # Dashboard UI
