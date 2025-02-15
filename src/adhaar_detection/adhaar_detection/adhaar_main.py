@@ -57,6 +57,18 @@ class Adhaar_class(Node):
         self.subscriber = self.create_subscription(Image,'/image_raw',self.process_data,10)
         self.adhaar_detected = self.create_publisher(String,"/adhaar/detected",10)
 
+        # self.extra_details= self.declare_parameter('extra_details', json.dumps({
+        #             "priority":"2",
+        #             "status":"Todo",
+        #             "title":"appointment",
+        #             "extraDetails":{}
+        #         })).get_parameter_value().string_value  ## ros2 run adhaar_detection adhaar --ros-args --param "extra_details:='{\"priority\": \"3\", \"status\": \"Todo\", \"title\": \"Eye specialists \", \"extraDetails\": {}}'"
+        
+        self.extra_details_1= self.declare_parameter('extra_details_1', json.dumps("appointment")).get_parameter_value().string_value
+        print(self.extra_details_1)
+
+
+
         self.bridge   = CvBridge()
 
 
@@ -122,16 +134,21 @@ class Adhaar_class(Node):
         if Aadhaar:
             dta = String()
             dta.data = json.dumps({
-                "Name:": Name,
-                "DOB:": DOB,
-                "Gender:": Gender,
-                "Aadhaar No:": Aadhaar
+                "name": Name,
+                "age": DOB,
+                "gender": Gender,
+                "aadhar": Aadhaar,
+                "extra_details":{
+                    "priority":"2",
+                    "status":"New",
+                    "title":self.extra_details_1,
+                    "extraDetails":{}
+                }
             })
             self.adhaar_detected.publish(dta)
 
-            # Signal the main function to shut down
             self.get_logger().info("Aadhaar data detected. Shutting down node.")
-            raise SystemExit  # Exit the node gracefully
+            raise SystemExit
 
 
 

@@ -105,6 +105,13 @@ def generate_launch_description():
             executable='task',
             name='xparo_task',
             output='screen',
+            parameters=[
+                {'emergency_stop': False},
+                {'xparo_timer_speed': 1.0},
+                {'xparo_project_id': xparo_project_id},
+                {'task_checkpoint_file': os.path.join(current_dir, "xparo", 'task','task_checkpoint_file.json')},
+                {'services_file':os.path.join(current_dir, "xparo", 'task','services_file.json')},
+            ]
         ),
 
         # Offline Speaking

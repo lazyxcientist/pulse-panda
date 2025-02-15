@@ -26,6 +26,7 @@ setup(
         (os.path.join('share', package_name,'xparo/properties'), glob('xparo/properties/*')),
         (os.path.join('share', package_name,'xparo/speak'), glob('xparo/speak/*')),
         (os.path.join('share', package_name,'xparo/prompts'), glob('xparo/prompts/*')),
+        (os.path.join('share', package_name,'xparo/task'), glob('xparo/task/*')),
         
 
     ],
