@@ -164,7 +164,8 @@ class Speak(Node):
         ###############
         qq = String()
         qq.data = json.dumps({"emotion":self.detect_emotion(text)})
-        self.xparo_send.publish(qq)
+        # self.xparo_send.publish(qq)
+        self.dashboard_send(qq)
 
 
     def stop_existing_playback(self):

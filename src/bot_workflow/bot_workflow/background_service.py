@@ -23,7 +23,7 @@ class Background_service(Node):
         # topics
         self.task_add =  self.create_publisher(String, '/xparo/task/add', 10)
         self.adhaar_detected = self.create_subscription(String,"/adhaar/detected",self.adhaar_detected_fun,10)
-        self.xparo_ask = self.create_publisher(String, '/xparo/ask', 10)
+        # self.xparo_ask = self.create_publisher(String, '/xparo/ask', 10)
         self.xparo_response = self.create_publisher(String, '/xparo/response', 10)
 
         
