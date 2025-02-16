@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'bot_workflow'
+package_name = 'arduino_animate'
 
 setup(
     name=package_name,
@@ -20,7 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "background_service = bot_workflow.background_service:main",
         ],
     },
 )

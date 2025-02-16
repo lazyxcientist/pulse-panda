@@ -22,89 +22,40 @@ def generate_launch_description():
             DeclareLaunchArgument('use_sim_time',   default_value=use_sim_time ,description='Specifying whether or not to use simulation or real robot'),
 
 
-            ##################################################
-            ############## /cmd_vel ##########################
-            ##################################################
+
+
+            ##############################################
+            ############ Xparo  ############
+            ##############################################
+
+            #  hardware
             IncludeLaunchDescription(
-                        PythonLaunchDescriptionSource([os.path.join(
-                            get_package_share_directory(package_name),'launch','joystick.launch.py'
-                        )]), launch_arguments={'use_sim_time': use_sim_time}.items()
-            ),
+                PythonLaunchDescriptionSource(
+                    os.path.join(get_package_share_directory('core'),
+                    'launch', 'launch_hardware.launch.py'))
+                    ),
+
+
+
+            # xparo services
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(get_package_share_directory('core'),
+                    'launch', 'launch_xparo.launch.py'))
+                    ),
+
+            ##############################################
+
+
+            # background service
             Node(
-                    package="twist_mux",
-                    executable="twist_mux",
-                    parameters=[
-                            os.path.join(get_package_share_directory('core'),'config','twist_mux.yaml'),
-                            {'use_sim_time': use_sim_time}
-                            ],
-                    remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
-                ),
-            ####################################################
-
-
-            # Node(
-            #         package='v4l2_camera',
-            #         executable='v4l2_camera_node',
-            #         output='screen',
-            #         namespace='camera',
-            #         # parameters=[{
-            #         #     'image_size': [640, 480],
-            #         #     'time_per_frame': [1, 6],
-            #         #     'camera_frame_id': 'camera_link_optical'
-            #         #     }]
-            #         ),
-
-
-
-
-            ##############################################
-            ############ Navigation 2 stack  ############
-            ##############################################
-            #launching slam_toolbox  to genrate slam map
-            # IncludeLaunchDescription(
-            #     PythonLaunchDescriptionSource(
-            #         os.path.join(get_package_share_directory('slam_toolbox'), #slam_toolbox
-            #         'launch', 'online_async_launch.py')),
-            #         launch_arguments={
-            #                         'params_file': os.path.join(current_dir,'config','mapper_params_online_async.yaml'),
-            #                         'use_sim_time':use_sim_time
-            #                         }.items()
-            #         ),
-
-
-
-            # # ## loading AMCL localization
-            # IncludeLaunchDescription(
-            #     PythonLaunchDescriptionSource(
-            #         os.path.join(get_package_share_directory('nav2_bringup'), #nav2_bringup
-            #         'launch', 'localization_launch.py')),
-            #         launch_arguments={
-            #                         'map': os.path.join(current_dir,'maps','testing_world_map.yaml'),
-            #                         'use_sim_time':use_sim_time,
-            #                         'map_subscribe_transient_local':'true'}.items()
-            #         ),
-
-
-            ## loading nav2 stack
-            ## ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
-            # IncludeLaunchDescription(
-            #     PythonLaunchDescriptionSource(
-            #         os.path.join(get_package_share_directory('nav2_bringup'), #nav2_bringup
-            #         'launch', 'navigation_launch.py')),
-            #         launch_arguments={
-            #             #  'map_subscribe_transient_local':'true',
-            #                         'use_sim_time':use_sim_time}.items()
-            #         ),
-            # ExecuteProcess(
-            #     cmd=[
-            #         'ros2', 'launch', 'nav2_bringup', 'navigation_launch.py',
-            #         f'use_sim_time:={use_sim_time}',
-            #         # 'map_subscribe_transient_local:=true',
-            #         # 'params_file:=' + os.path.join(current_dir, 'config', 'nav2_params.yaml')
-            #     ]
-            # ),
-            ##############################################
-
+                package='bot_workflow',
+                executable='bot_workflow',
+                output='screen',
+                parameters=[
+                    {'service_url': 'https://lazy-legends-robotics.azurewebsites.net/'},
+                    {'service_api': 'chatbot_api/pankaj/c736f428-d21c-47c4-8471-c16fc95701d0/'},
+                ]),
 
 
 

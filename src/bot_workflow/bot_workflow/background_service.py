@@ -4,13 +4,13 @@ from std_msgs.msg import String
 import json
 
 from ament_index_python.packages import get_package_share_directory
-import os
 import json
 
 from ament_index_python.packages import get_package_share_directory
 import os
 import uuid
 from datetime import datetime, timezone
+import re
 
 
 
@@ -23,27 +23,18 @@ class Background_service(Node):
         # topics
         self.task_add =  self.create_publisher(String, '/xparo/task/add', 10)
         self.adhaar_detected = self.create_subscription(String,"/adhaar/detected",self.adhaar_detected_fun,10)
-        '''{
-                "name": "demmo",
-                "age": 20,
-                "gender": "male",
-                "aadhar": "1111111111",
-                "extra_details":{
-                    "priority":"2",
-                    "status":"Todo",
-                    "title":"appointment",
-                    "extraDetails":{}
-                }
-            }'''
+        self.xparo_ask = self.create_publisher(String, '/xparo/ask', 10)
+        self.xparo_response = self.create_publisher(String, '/xparo/response', 10)
+
+        
         
         ## parameters
-        self.service_url= self.declare_parameter('service_url',"http://127.0.0.1:8004/").get_parameter_value().string_value
+        self.service_url= self.declare_parameter('service_url',"https://lazy-legends-robotics.azurewebsites.net/").get_parameter_value().string_value
         self.service_api= self.declare_parameter('service_api',"chatbot_api/pankaj/c736f428-d21c-47c4-8471-c16fc95701d0/").get_parameter_value().string_value
-        self.extra_details= self.declare_parameter('extra_details',"").get_parameter_value().string_value
-        self.extra_details= self.declare_parameter('extra_details',"").get_parameter_value().string_value
     
 
 
+    ##################################################
     def adhaar_detected_fun(self, msg):
         data =  json.loads(msg.data)
 
@@ -65,8 +56,7 @@ class Background_service(Node):
                             "temperature":30
                         },
                         "created_at": str(timestamp)
-                    }
-                    }
+                    }}
         ###########################
 
         if "name" in check:
@@ -118,6 +108,8 @@ class Background_service(Node):
         dd = String()
         dd.data=json.dumps(data)
         self.task_add.publish(dd)
+    ##################################################
+
 
 
 

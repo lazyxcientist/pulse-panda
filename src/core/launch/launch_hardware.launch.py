@@ -46,25 +46,6 @@ def generate_launch_description():
 
 
 
-            ######################################
-            #### lidar 
-            ### ros2 run rplidar_ros rplidar_composition --ros-args -p serial_port:=/dev/ttyUSB0 -p channel_type:=serial -p serial_baudrate:=115200 -p inverted:=false -p frame_id:=laser_frame -p angle_compensate:=true -p scan_mode:=Standard
-            Node(
-                package='rplidar_ros',
-                executable='rplidar_composition',
-                name='rplidar_composition',
-                parameters=[{'channel_type':channel_type,
-                                'serial_port': serial_lidar_port,
-                                'serial_baudrate': serial_baudrate,
-                                'frame_id': frame_id,
-                                'inverted': inverted,
-                                'angle_compensate': angle_compensate,
-                                'scan_mode': scan_mode
-                                }],
-                output='screen'),
-            ##############################################
-
-
 
 
 
@@ -73,17 +54,17 @@ def generate_launch_description():
 
             ##############################################
             #### camera
-            # Node(
-            # 		package='v4l2_camera',
-            # 		executable='v4l2_camera_node',
-            # 		output='screen',
-            # 		namespace='camera',
-            # 		parameters=[{
-            # 			'image_size': [640, 480],
-            # 			'time_per_frame': [1, 6],
-            # 			'camera_frame_id': 'camera_link_optical'
-            # 			}]
-            # 		),
+            Node(
+            		package='v4l2_camera',
+            		executable='v4l2_camera_node',
+            		output='screen',
+            		namespace='camera',
+            		# parameters=[{
+            		# 	'image_size': [640, 480],
+            		# 	'time_per_frame': [1, 6],
+            		# 	'camera_frame_id': 'camera_link_optical'
+            		# 	}]
+            		),
             ##############################################
 
 
@@ -93,43 +74,6 @@ def generate_launch_description():
 
 
 
-            ##############################################
-            #### robot tyres cnotrol
-            # Node(
-            #     package='serial_motor_demo',
-            #     executable='driver',
-            #     name='tyre_hardware_control',
-            #     parameters=[{'serial_port': serial_tyre_port}],
-            #     output='screen'),
-            ##############################################
-
-
-
-
-
-            ##############################################
-            ### robot arm cnotrol
-            # Node(
-            #     package='serial_motor_demo',
-            #     executable='hardware_control_node',
-            #     name='tyre_hardware_control',
-            #     parameters=[{'port': serial_arm_port}],
-            #     output='screen'),
-            ##############################################
-
-
-
-
-
-            ##############################################
-            #### robot sensor data read
-            # Node(
-            #     package='serial_motor_demo',
-            #     executable='checkup_feature',
-            #     name='checkup_feature',
-            #     parameters=[{'port': serial_module_port}],
-            #     output='screen'),
-            ##############################################
 
 
 

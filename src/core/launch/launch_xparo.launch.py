@@ -27,6 +27,9 @@ def generate_launch_description():
                 {'xparo_secret_key': xparo_secret_key},
                 {'xparo_project_id': xparo_project_id},
                 {'xparo_connection_type': 'hybrid'},
+                {'animated_voices':True},
+                {'speak_max_length':200},
+                {'custom_name':"panda pulse add that the"},
                 {'xparo_custom_aiml_path': os.path.join(current_dir, "xparo", 'aiml')},
                 {'xparo_custom_sets_path': os.path.join(current_dir, "xparo", 'sets')},
                 {'xparo_custom_maps_path': os.path.join(current_dir, "xparo", 'maps')},
@@ -68,7 +71,8 @@ def generate_launch_description():
             parameters=[
                 {'xparo_custom_llm_api_key': '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'},
                 {'xparo_custom_llm_model': 'qwen/qwen-vl-plus:free'},
-                {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')}
+                {'xparo_custom_llm_extra_prompt': os.path.join(current_dir, "xparo", 'prompts','prompts.txt')},
+                {"xparo_custom_llm_use_history":False},
             ]
         ),
 
@@ -135,8 +139,9 @@ def generate_launch_description():
             name='xparo_listen',
             output='screen',
             parameters=[
-                {'xparo_voice_model': 'vosk-model-en-in-0.5'},   #vosk-model-small-en-in-0.4
+                {'xparo_voice_model': 'vosk-model-en-in-0.5'},   #vosk-model-small-en-in-0.4  ,,  vosk-model-en-in-0.5
                 {'base_path': '/var/tmp/xparo/listen'},
+                {'custom_name': 'hi hello test xparo xp robot bot pulse panda reception doctor nurse patient treatment appointment medicine hospital clinic healthcare medical center emergency ICU OPD doctor physician specialist surgeon neurologist cardiologist dermatologist orthopedist dentist fever headache cough cold pain flu diabetes cancer infection allergy appointment consultation checkup prescription treatment surgery diagnosis ambulance emergency first aid CPR life-threatening stroke heart attack accident thank you'},
             ]
         ),
     ])
