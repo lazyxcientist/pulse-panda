@@ -133,7 +133,7 @@ class Speak(Node):
                         self.connect()
                     except:
                         try:
-                            self.port="/dev/ttyACM0"
+                            self.port="/dev/ttyACM1"
                             self.connect()
                         except:
                             pass
