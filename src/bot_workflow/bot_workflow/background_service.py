@@ -11,6 +11,8 @@ import os
 import uuid
 from datetime import datetime, timezone
 import re
+import requests
+
 
 
 
@@ -25,6 +27,8 @@ class Background_service(Node):
         self.adhaar_detected = self.create_subscription(String,"/adhaar/detected",self.adhaar_detected_fun,10)
         # self.xparo_ask = self.create_publisher(String, '/xparo/ask', 10)
         self.xparo_response = self.create_publisher(String, '/xparo/response', 10)
+
+        # ros2 topic pub /adhaar/detected std_msgs/msg/String '{ "data": "{\"aadhar\": \"123456789012\", \"name\": \"John Doe\", \"age\": 30, \"gender\": \"male\", \"extra_details\": {\"priority\": \"1\", \"status\": \"Pending\", \"title\": \"Doctor Appointment\", \"extraDetails\": {\"temperature\": 36.5}}}"}'
 
         
         
@@ -50,7 +54,7 @@ class Background_service(Node):
                         "aadhar": data["aadhar"],
                         "priority": "3",
                         "gender": "male",
-                        "status": "Todo",
+                        "status": "Doctor",
                         "title": "appointment",
                         "extraDetails": {
                             "temperature":30
@@ -66,49 +70,29 @@ class Background_service(Node):
         if "gender" in check:
             return_data["ADD_services"]["gender"] = data["gender"]
         if "extra_details" in check:
-            check_22 = data["extra_details"]
+            dddd = data["extra_details"]
+            check_22 = dddd.keys()
             if "priority" in check_22:
-                return_data["ADD_services"]["priority"] = data["priority"]
+                return_data["ADD_services"]["priority"] = dddd["priority"]
             if "status" in check_22:
-                return_data["ADD_services"]["status"] = data["status"]
+                return_data["ADD_services"]["status"] = dddd["status"]
             if "title" in check_22:
-                return_data["ADD_services"]["title"] = data["title"]
+                return_data["ADD_services"]["title"] = dddd["title"]
             if "extraDetails" in check_22:
-                return_data["ADD_services"]["extraDetails"] = data["extraDetails"]
+                return_data["ADD_services"]["extraDetails"] = dddd["extraDetails"]
 
         self.send_rest_request_to_task(return_data)
 
 
+
+
     def send_rest_request_to_task(self,return_data):
-        data =  {
-                "id":  str(uuid.uuid4())+str(uuid.uuid4()),
-                "avatar": "https://cdn3d.iconscout.com/3d/premium/thumb/male-doctor-eye-test-using-an-chart-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--optical-vision-medical-version-pack-treatment-illustrations-9643496.png?f=webp",
-                "content": return_data["ADD_services"]["name"],
-                "title": return_data["ADD_services"]["name"],
-                "timeout": 80,
-                "about": return_data["ADD_services"]["gender"],
-                "label": return_data["ADD_services"]["name"],
-                "status": "Todo",
-                "priority": "3",
-                "taskList": [
-                {"id": "task-2",
-                            "type": "send_rest_request",
-                            "title": "Send REST Request", 
-                            "extraData": {"url": "http://127.0.0.1:8004/chatbot_api/pankaj/c736f428-d21c-47c4-8471-c16fc95701d0/",
-                            "body": json.dumps(return_data),
-                            "method": "POST",
-                            "headers": {"Content-type": "application/json"}},
-                            "on_failure": "",
-                            "on_timeout": "",
-                            "on_complete": "",
-                            "estimatedDuration": 2}
-                ],
-                "extraDetails": {}
-            }
-        dd = String()
-        dd.data=json.dumps(data)
-        self.task_add.publish(dd)
-    ##################################################
+        response = requests.post(
+                self.service_url+self.service_api, 
+                json=return_data,
+                headers= {'Content-type': 'application/json'}
+                )
+        self.get_logger().info(str(response.status_code))
 
 
 
