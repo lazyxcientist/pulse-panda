@@ -44,47 +44,47 @@ class Speak(Node):
         self.emote_dict = {
     "neutral":{
         "sound":"gbaby_quick_suprise.wav",
-        "animation": "neutral",
+        "animation": self.animation_neutral,
         },
     "happy":{
         "sound":"gbaby_giggle.wav",
-        "animation": "happy"
+        "animation": self.animation_happy
         },
     "sad":{
         "sound":"gbaby_wakeup.wav",
-        "animation": "sad"
+        "animation": self.animation_sad
         },
     "close":{
         "sound":"gbaby_quick_suprise_5.wav",
-        "animation": "close"
+        "animation": self.animation_close
         },
     "angry":{
         "sound":"gbaby_yummy.wav",
-        "animation": "angry"
+        "animation": self.animation_angry
         },
     "confused":{
         "sound":"gbaby_haah.wav",
-        "animation": "confused"
+        "animation": self.animation_confused
         },
     "suspicious":{
         "sound":"gbaby_quick_suprise_2.wav",
-        "animation": "suspicious"
+        "animation": self.animation_suspicious
         },
     "pain":{
         "sound":"gbaby_wakeup.wav",
-        "animation": "pain"
+        "animation": self.animation_pain
         },
     "unamused":{
         "sound":"gbaby_hay.wav",
-        "animation": "unamused"
+        "animation": self.animation_unamused
         },
     "unsure":{
         "sound":"gbaby_he.wav",
-        "animation": "unsure"
+        "animation": self.animation_unsure
         },
     "charger_connected":{
         "sound":"charger_connected.wav",
-        "animation": "charger_connected"
+        "animation": self.animation_unsure
         },
 }
         self.emotion_patterns = {
@@ -104,7 +104,7 @@ class Speak(Node):
 
 
         # topics
-        self.create_subscription(String, '/xparo/response', self.animate_now, 10)
+        self.create_subscription(String, '/xparo/response', self.speak_now, 10)
         self.xparo_send = self.create_publisher(String, '/xparo/dashboard/send', 10)
         self.xparo_send_sub = self.create_subscription(String, '/xparo/dashboard/send', self.dashboard_send, 10)
         self.pir_detected = self.create_publisher(Bool, '/xparo/sensor/PIR', 10)
@@ -135,8 +135,9 @@ class Speak(Node):
     ############################################################
     ############################################################
 
-    def animate_now(self, message):
+    def speak_now(self, message):
         text = str(message.data)
+        self.get_logger().error(f"speak now is called {text}")
         try:
             dta = json.loads(text)
             text = dta["xparo"]
@@ -146,6 +147,7 @@ class Speak(Node):
             self.xparo_send.publish(qq)
         except:
             pass
+        threading.Thread(target =self.speak, args=(text,)).start()
 
 
     def stop_existing_playback(self):
@@ -159,17 +161,10 @@ class Speak(Node):
         if file_path is None:
             file_path = os.path.join(self.base_path,"tts_adjusted.wav")
         
-        # device_info = sd.query_devices(kind='output')
-        # print(f"Available output devices: {device_info}")
-        # sound = AudioSegment.from_file(file_path)
-        # play(sound)
-
-
-        try:
-            directory = os.path.join(get_package_share_directory("xparo_speak"),"sound")
-            os.system(f"aplay {os.path.join(directory, file_path)}")
-        except Exception as e:
-            print(e)
+        device_info = sd.query_devices(kind='output')
+        print(f"Available output devices: {device_info}")
+        sound = AudioSegment.from_file(file_path)
+        play(sound)
 
         
     ############################################################
@@ -197,11 +192,11 @@ class Speak(Node):
             print(f"JSON decode error: {e}: {msg.data}")
 
 
-    def send_command(self, data):
-        command = f"{data}\n"
+    def send_command(self, enable, pwm1, pwm2, pwm3, pwm4):
+        command = f"{enable},{pwm1},{pwm2},{pwm3},{pwm4}\n"
         if self.arduino.is_open:
             self.arduino.write(command.encode("utf-8"))
-            time.sleep(0.02)
+            # time.sleep(0.02)
 
 
     def read_pir(self):
@@ -232,30 +227,113 @@ class Speak(Node):
     ############################################################
     ############################################################
     ############################################################
+    def smooth_transition(self, start, end, duration):
+        """
+        Performs a smooth transition between start and end PWM values for all pins.
+        """
+        steps = 50
+        delay_time = duration / steps
+        for i in range(steps + 1):
+            pwm1 = int(start[0] + (end[0] - start[0]) * i / steps)
+            pwm2 = int(start[1] + (end[1] - start[1]) * i / steps)
+            pwm3 = int(start[2] + (end[2] - start[2]) * i / steps)
+            pwm4 = int(start[3] + (end[3] - start[3]) * i / steps)
+            self.send_command(1, pwm1, pwm2, pwm3, pwm4)
+            time.sleep(delay_time / 1000)
 
     def play_animation(self, emotion):
         """
         Plays the animation corresponding to the given emotion.
         """
-        # if self.running  or ( emotion not in self.emote_dict ):
-        #     return
+        if self.running or emotion not in self.emote_dict:
+            return
 
         animation_func = self.emote_dict[emotion]["animation"]
         sound_file = self.emote_dict[emotion]["sound"]
-        self.play_audio(sound_file)
+        self.play_audio(os.path.join(base_path_for_package,sound_file))
 
-        # self.running = True
-        # duration = random.randint(*self.animation_duration)
-        # print(f"Playing '{emotion}' animation with sound {sound_file} for {duration} seconds.")
-        # animation_thread = threading.Thread(target=animation_func, args=(duration,))
-        # animation_thread.start()
-        # animation_thread.join()
-        # self.running = False
+        self.running = True
+        duration = random.randint(*self.animation_duration)
+        print(f"Playing '{emotion}' animation with sound {sound_file} for {duration} seconds.")
+        animation_thread = threading.Thread(target=animation_func, args=(duration,))
+        animation_thread.start()
+        animation_thread.join()
+        self.running = False
 
-        self.send_command(animation_func)
+        # Turn off lights after animation
+        self.send_command(0, 0, 0, 0, 0)
 
+    # Emotion Animations
+    def animation_neutral(self, duration):
+        """A steady, calm breathing pattern."""
+        for _ in range(int(duration * 2)):
+            self.smooth_transition((0, 128, 128, 0), (128, 0, 0, 128), 1000)
+            self.smooth_transition((128, 0, 0, 128), (0, 128, 128, 0), 1000)
 
+    def animation_happy(self, duration):
+        """A bright and cheerful alternating flash."""
+        for _ in range(int(duration * 5)):
+            self.send_command(1, 255, 128, 0, 255)
+            time.sleep(0.2)
+            self.send_command(1, 0, 255, 128, 0)
+            time.sleep(0.2)
 
+    def animation_sad(self, duration):
+        """A slow fade-out and fade-in with dim lighting."""
+        for _ in range(int(duration * 2)):
+            self.smooth_transition((0, 64, 64, 0), (0, 0, 0, 0), 1000)
+            self.smooth_transition((0, 0, 0, 0), (0, 64, 64, 0), 1000)
+
+    def animation_close(self, duration):
+        """Both lights gradually fade to off."""
+        for _ in range(int(duration)):
+            self.smooth_transition((255, 255, 255, 255), (0, 0, 0, 0), 2000)
+
+    def animation_angry(self, duration):
+        """Fast, intense red flashes."""
+        for _ in range(int(duration * 3)):
+            self.send_command(1, 255, 0, 0, 0)
+            time.sleep(0.1)
+            self.send_command(1, 128, 0, 0, 64)
+            time.sleep(0.1)
+
+    def animation_confused(self, duration):
+        """Alternating slow waves of blue and green."""
+        for _ in range(int(duration * 4)):
+            self.smooth_transition((0, 0, 255, 0), (0, 255, 0, 255), 1000)
+            self.smooth_transition((0, 255, 0, 255), (0, 0, 255, 0), 1000)
+
+    def animation_suspicious(self, duration):
+        """Sharp pulses of red and dim blue."""
+        for _ in range(int(duration * 5)):
+            self.send_command(1, 255, 0, 64, 0)
+            time.sleep(0.15)
+            self.send_command(1, 128, 0, 32, 0)
+            time.sleep(0.15)
+
+    def animation_pain(self, duration):
+        """Rapid jittery flashes."""
+        for _ in range(int(duration * 10)):
+            pwm1 = random.randint(128, 255)
+            pwm2 = random.randint(0, 128)
+            pwm3 = random.randint(128, 255)
+            pwm4 = random.randint(0, 128)
+            self.send_command(1, pwm1, pwm2, pwm3, pwm4)
+            time.sleep(0.1)
+
+    def animation_unamused(self, duration):
+        """A slow, dull pulsating pattern."""
+        for _ in range(int(duration * 2)):
+            self.smooth_transition((64, 32, 32, 64), (0, 0, 0, 0), 1500)
+            self.smooth_transition((0, 0, 0, 0), (64, 32, 32, 64), 1500)
+
+    def animation_unsure(self, duration):
+        """Erratic, alternating pulses."""
+        for _ in range(int(duration * 5)):
+            self.send_command(1, 128, 64, 128, 64)
+            time.sleep(0.2)
+            self.send_command(1, 64, 128, 64, 128)
+            time.sleep(0.2)
 
     def close(self):
         if self.arduino.is_open:
