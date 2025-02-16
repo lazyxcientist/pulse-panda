@@ -50,7 +50,7 @@ def generate_launch_description():
             # background service
             Node(
                 package='bot_workflow',
-                executable='bot_workflow',
+                executable='background_service',
                 output='screen',
                 parameters=[
                     {'service_url': 'https://lazy-legends-robotics.azurewebsites.net/'},
