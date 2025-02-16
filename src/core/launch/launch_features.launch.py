@@ -58,6 +58,17 @@ def generate_launch_description():
                 ]),
 
 
+            # background service
+            Node(
+                package='arduino_animate',
+                executable='animate',
+                output='screen',
+                parameters=[
+                    {'port': '/dev/ttyUSB0'},
+                    {'baud_rate': 9600},
+                    {'running':False},
+                ]),
+
 
 
 
