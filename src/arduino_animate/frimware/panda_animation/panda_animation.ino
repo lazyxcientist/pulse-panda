@@ -9,7 +9,7 @@ Servo rightHandServo;
 const int pirPin = 2;
 
 // Calibration variables for servos
-int neckCalibration = 0;    // Adjust this to calibrate neck servo
+int neckCalibration = -45;    // Adjust this to calibrate neck servo
 int leftHandCalibration = 0; // Adjust this to calibrate left hand servo
 int rightHandCalibration = 0; // Adjust this to calibrate right hand servo
 
@@ -24,8 +24,8 @@ int animationSpeed = 15; // Delay between each step (in milliseconds)
 void setup() {
   // Attach servos to pins
   neckServo.attach(9);
-  leftHandServo.attach(10);
-  rightHandServo.attach(11);
+  leftHandServo.attach(11);
+  rightHandServo.attach(10);
 
   // Initialize PIR sensor pin
   pinMode(pirPin, INPUT);

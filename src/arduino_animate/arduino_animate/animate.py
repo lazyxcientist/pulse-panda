@@ -37,14 +37,14 @@ class Speak(Node):
         # xparo_config.get("", "")
         ################################################
         # parameters
-        self.port=self.declare_parameter('port', xparo_config.get("port", "/dev/ttyUSB0"))
-        self.baud_rate=self.declare_parameter('baud_rate',xparo_config.get("baud_rate",9600 ) )
+        self.port=self.declare_parameter('port', xparo_config.get("port", "/dev/ttyUSB0")).get_parameter_value().string_value
+        self.baud_rate=self.declare_parameter('baud_rate',xparo_config.get("baud_rate",9600 ) ).get_parameter_value().integer_value
         self.running =self.declare_parameter('running',xparo_config.get("running", False) )
         self.base_path =self.declare_parameter('speak_path',xparo_config.get("speak_path", "/var/tmp/xparo/speak") ).get_parameter_value().string_value
         self.emote_dict = {
     "neutral":{
         "sound":"gbaby_quick_suprise.wav",
-        "animation": "neutral",
+        "animation": "happy",
         },
     "happy":{
         "sound":"gbaby_giggle.wav",
@@ -120,6 +120,25 @@ class Speak(Node):
             self.connect()
         except Exception as e:
             self.get_logger().error(f"Failed to connect to Arduino: {e}")
+            try:
+                self.port="/dev/ttyUSB0"
+                self.connect()
+            except:
+                try:
+                    self.port="/dev/ttyUSB1"
+                    self.connect()
+                except:
+                    try:
+                        self.port="/dev/ttyACM0"
+                        self.connect()
+                    except:
+                        try:
+                            self.port="/dev/ttyACM0"
+                            self.connect()
+                        except:
+                            pass
+
+                
 
 
     def connect(self):
@@ -140,12 +159,12 @@ class Speak(Node):
         try:
             dta = json.loads(text)
             text = dta["xparo"]
-            ###############
-            qq = String()
-            qq.data = json.dumps({"emotion":self.detect_emotion(text)})
-            self.xparo_send.publish(qq)
         except:
             pass
+        ###############
+        qq = String()
+        qq.data = json.dumps({"emotion":self.detect_emotion(text)})
+        self.xparo_send.publish(qq)
 
 
     def stop_existing_playback(self):
@@ -177,13 +196,11 @@ class Speak(Node):
     ############################################################
 
     def detect_emotion(self, text):
-        # Normalize the text to lower case to improve matching
         text = str(text).lower()
-        # Check each emotion pattern and find a match
         for emotion, pattern in self.emotion_patterns.items():
             if pattern.search(text):
                 return emotion  # Return the first matching emotion
-        return "none"  # Default to neutral if no emotion is detected
+        return "happy"
 
     def dashboard_send(self,msg):
         self.get_logger().error(f"dashbaord send is called {msg.data}")
