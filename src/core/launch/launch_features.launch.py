@@ -29,11 +29,11 @@ def generate_launch_description():
             ##############################################
 
             #  hardware
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(get_package_share_directory('core'),
-                    'launch', 'launch_hardware.launch.py'))
-                    ),
+            # IncludeLaunchDescription(
+            #     PythonLaunchDescriptionSource(
+            #         os.path.join(get_package_share_directory('core'),
+            #         'launch', 'launch_hardware.launch.py'))
+            #         ),
 
 
 
