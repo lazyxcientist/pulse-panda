@@ -45,8 +45,14 @@ def preprocess_image(image):
 
 
 
+# sudo apt install ros-jazzy-cv-bridge
+# sudo apt install ros-jazzy-vision-opencv
+# sudo apt install ros-jazzy-realsense2-camera
+# sudo apt install ros-jazzy-realsense2-description
 
 
+
+# ros2 launch realsense2_camera rs_launch.py
 
 
 class Adhaar_class(Node):
@@ -54,7 +60,7 @@ class Adhaar_class(Node):
     def __init__(self):
         super().__init__('Adhaar_node')
 
-        self.subscriber = self.create_subscription(Image,'/image_raw',self.process_data,10)
+        self.subscriber = self.create_subscription(Image,'/camera/color/image_raw',self.process_data,10)
         self.adhaar_detected = self.create_publisher(String,"/adhaar/detected",10)
 
         # self.extra_details= self.declare_parameter('extra_details', json.dumps({

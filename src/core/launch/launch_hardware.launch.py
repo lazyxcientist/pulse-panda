@@ -54,22 +54,24 @@ def generate_launch_description():
 
             ##############################################
             #### camera
-            Node(
-            		package='v4l2_camera',
-            		executable='v4l2_camera_node',
-            		output='screen',
-            		namespace='camera',
-            		# parameters=[{
-            		# 	'image_size': [640, 480],
-            		# 	'time_per_frame': [1, 6],
-            		# 	'camera_frame_id': 'camera_link_optical'
-            		# 	}]
-            		),
+        #     Node(
+        #     		package='v4l2_camera',
+        #     		executable='v4l2_camera_node',
+        #     		output='screen',
+        #     		namespace='camera',
+        #     		# parameters=[{
+        #     		# 	'image_size': [640, 480],
+        #     		# 	'time_per_frame': [1, 6],
+        #     		# 	'camera_frame_id': 'camera_link_optical'
+        #     		# 	}]
+        #     		),
+        #### depth camera
+        IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                        os.path.join(get_package_share_directory('realsense2_camera'),
+                        'launch', 'rs_launch.py'))),
+
             ##############################################
-
-
-
-
 
 
 
