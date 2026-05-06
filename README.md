@@ -1,6 +1,7 @@
 # Pulse Panda  robot
 -------------------------
 
+[![Watch the video](https://youtube.com)]([https://youtube.com](https://youtube.com/shorts/r9C5ygQdmFE?feature=share))
 
 
 #### build package
@@ -37,5 +38,7 @@ to run robot package
 to visvalize the data
 
     ros2 launch core launch_data_visualization.launch.py 
+
+
 
     
