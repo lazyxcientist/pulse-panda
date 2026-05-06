@@ -6,7 +6,7 @@
 Click below to watch the demo:
 
 [![Watch the demo](https://img.youtube.com/vi/r9C5ygQdmFE/0.jpg)](https://www.youtube.com/shorts/r9C5ygQdmFE)
-
+[![Watch the demo](https://img.youtube.com/vi/LuZZ1V4NluI/0.jpg)](https://www.youtube.com/shorts/LuZZ1V4NluI)
 
 #### build package
 ```bash
