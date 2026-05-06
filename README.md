@@ -1,7 +1,11 @@
 # Pulse Panda  robot
 -------------------------
 
-[![Watch the video](https://youtube.com)]([https://youtube.com](https://youtube.com/shorts/r9C5ygQdmFE?feature=share))
+## 🚀 Demo
+
+Click below to watch the demo:
+
+[![Watch the demo](https://img.youtube.com/vi/r9C5ygQdmFE/0.jpg)](https://www.youtube.com/shorts/r9C5ygQdmFE)
 
 
 #### build package
